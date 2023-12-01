@@ -47,6 +47,7 @@ fn main() {
     part_2(include_str!("input.txt").lines());
     part_2_optimized(include_str!("input.txt").lines());
     part_2_swvs(include_str!("input.txt").lines());
+    part_2_only_edges(include_str!("input.txt").lines());
 }
 
 fn part_1(lines: Lines<'_>) {
@@ -117,6 +118,42 @@ fn part_2_swvs(lines: Lines<'_>) {
     println!("{}", result);
 }
 
+fn part_2_only_edges(lines: Lines<'_>) {
+    let result = lines.fold(0, |sum, line| {
+        let mut digits = [b'0'; 2];
+        digits[0] = find_first_number(line);
+        digits[1] = find_last_number(line);
+        sum + str::from_utf8(&digits).unwrap().parse::<u32>().unwrap()
+    });
+    println!("{}", result);
+}
+
+fn find_first_number(line: &str) -> u8 {
+    if (line.as_bytes()[0] as char).is_numeric() {
+        line.as_bytes()[0]
+    } else if let Some((value, _)) = DIGITS
+        .iter()
+        .find(|(_i, d)| line.as_bytes().starts_with(d.as_bytes()))
+    {
+        *value
+    } else {
+        find_first_number(&line[1..line.len()])
+    }
+}
+
+fn find_last_number(line: &str) -> u8 {
+    if (line.as_bytes()[line.len() - 1] as char).is_numeric() {
+        line.as_bytes()[line.len() - 1]
+    } else if let Some((value, _)) = DIGITS
+        .iter()
+        .find(|(_i, d)| line.as_bytes().ends_with(d.as_bytes()))
+    {
+        *value
+    } else {
+        find_last_number(&line[0..line.len() - 1])
+    }
+}
+
 fn sum_digits<T: AsRef<str>>(lines: Vec<T>) {
     let result: u32 = lines
         .iter()
@@ -167,4 +204,10 @@ mod tests {
         let lines = include_str!("input.txt").lines();
         b.iter(|| crate::part_2_swvs(lines.to_owned()));
     } // 107,035 ns/iter (+/- 3,847)
+
+    #[bench]
+    fn bench_part_2_only_edges(b: &mut Bencher) {
+        let lines = include_str!("input.txt").lines();
+        b.iter(|| crate::part_2_only_edges(lines.to_owned()));
+    } // 45,783 ns/iter (+/- 5,454)
 }
