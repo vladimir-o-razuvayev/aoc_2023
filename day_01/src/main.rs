@@ -129,7 +129,7 @@ fn part_2_only_edges(lines: Lines<'_>) {
 }
 
 fn find_first_number(line: &str) -> u8 {
-    if (line.as_bytes()[0] as char).is_numeric() {
+    if (line.as_bytes()[0] as char).is_ascii_digit() {
         line.as_bytes()[0]
     } else if let Some((value, _)) = DIGITS
         .iter()
@@ -142,7 +142,7 @@ fn find_first_number(line: &str) -> u8 {
 }
 
 fn find_last_number(line: &str) -> u8 {
-    if (line.as_bytes()[line.len() - 1] as char).is_numeric() {
+    if (line.as_bytes()[line.len() - 1] as char).is_ascii_digit() {
         line.as_bytes()[line.len() - 1]
     } else if let Some((value, _)) = DIGITS
         .iter()
@@ -209,5 +209,5 @@ mod tests {
     fn bench_part_2_only_edges(b: &mut Bencher) {
         let lines = include_str!("input.txt").lines();
         b.iter(|| crate::part_2_only_edges(lines.to_owned()));
-    } // 45,783 ns/iter (+/- 5,454)
+    } // 45,478 ns/iter (+/- 3,074)
 }
