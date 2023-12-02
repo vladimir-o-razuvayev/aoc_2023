@@ -3,8 +3,7 @@ use std::str;
 // Recursive
 pub fn solution(input: &str) -> u32 {
     input.lines().fold(0, |sum, line| {
-        let digits = [find_first_number(line), find_last_number(line)];
-        sum + str::from_utf8(&digits).unwrap().parse::<u32>().unwrap()
+        sum + (((find_first_number(line) - b'0') * 10) + find_last_number(line) - b'0') as u32
     })
 }
 
