@@ -25,11 +25,9 @@ pub fn solution(input: &str) -> u32 {
                         }
                         in_num = false;
                     }
-                } else {
-                    if c.is_ascii_digit() {
-                        in_num = true;
-                        start_num = i;
-                    }
+                } else if c.is_ascii_digit() {
+                    in_num = true;
+                    start_num = i;
                 }
             }
             sum_num
@@ -50,12 +48,9 @@ fn gear_around(
         .map(|slice| slice.get(left..right).unwrap())
         .enumerate()
     {
-        for (j, c) in slice.bytes().into_iter().enumerate() {
-            if c == b'*' {
-                return Some((left + j, mid_line_number + i - 1));
-            }
+        if let Some((j, _)) = slice.bytes().enumerate().find(|(_, c)| *c == b'*') {
+            return Some((left + j, mid_line_number + i - 1));
         }
     }
-
     None
 }
