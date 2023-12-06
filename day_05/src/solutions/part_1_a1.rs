@@ -3,22 +3,25 @@ pub fn solution(input: &str) -> u64 {
     let seeds = parse_seeds(split_input.next().unwrap());
 
     split_input
-        .fold(seeds, |acc, map| {
-            acc.into_iter()
-                .map(|seed| {
-                    for (d, s, r) in parse_maps(map) {
-                        if (seed >= s) && (seed < s + r) {
-                            return seed + d - s;
-                        }
-                    }
-                    seed
-                })
-                .collect()
-        })
+        .fold(seeds, |acc, map| map_path(acc, &parse_maps(map)))
         .iter()
         .min()
         .unwrap()
         .to_owned()
+}
+
+fn map_path(origin: Vec<u64>, map: &Vec<(u64, u64, u64)>) -> Vec<u64> {
+    origin
+        .into_iter()
+        .map(|seed| {
+            for &(d, s, r) in map {
+                if (seed >= s) && (seed < s + r) {
+                    return seed + d - s;
+                }
+            }
+            seed
+        })
+        .collect()
 }
 
 fn parse_seeds(nums: &str) -> Vec<u64> {
