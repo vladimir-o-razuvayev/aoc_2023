@@ -27,11 +27,11 @@ mod tests {
     fn bench_part_1_a1(b: &mut Bencher) {
         let input = include_str!("input.txt");
         b.iter(|| crate::part_1_a1::solution(input));
-    } // 232,047 ns/iter (+/- 14,888)
+    } // 238,302 ns/iter (+/- 20,776)
 
     #[bench]
     fn bench_part_2_a1(b: &mut Bencher) {
         let input = include_str!("input.txt");
         b.iter(|| crate::part_2_a1::solution(input));
-    } // 242,802 ns/iter (+/- 17,752)
+    } // 244,952 ns/iter (+/- 15,668)
 }

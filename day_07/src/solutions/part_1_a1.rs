@@ -55,24 +55,24 @@ impl From<[char; 5]> for HandType {
         cards
             .iter()
             .for_each(|c| *card_map.entry(c).or_insert(0) += 1);
-        if card_map.keys().len() == 1 {
-            return HandType::FiveOfAKind;
-        } else if card_map.keys().len() == 2 {
-            if card_map.values().any(|&v| v == 4) {
-                return HandType::FourOfAKind;
-            } else {
-                return HandType::FullHouse;
+        match card_map.keys().len() {
+            1 => HandType::FiveOfAKind,
+            2 => {
+                if card_map.values().any(|&v| v == 4) {
+                    HandType::FourOfAKind
+                } else {
+                    HandType::FullHouse
+                }
             }
-        } else if card_map.keys().len() == 3 {
-            if card_map.values().any(|&v| v == 3) {
-                return HandType::ThreeOfAKind;
-            } else {
-                return HandType::TwoPair;
+            3 => {
+                if card_map.values().any(|&v| v == 3) {
+                    HandType::ThreeOfAKind
+                } else {
+                    HandType::TwoPair
+                }
             }
-        } else if card_map.keys().len() == 4 {
-            return HandType::OnePair;
-        } else {
-            return HandType::HighCard;
+            4 => HandType::OnePair,
+            _ => HandType::HighCard,
         }
     }
 }
