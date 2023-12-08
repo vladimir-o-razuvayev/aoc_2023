@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::str;
 
+use reikna::factor::lcm_all;
+
 pub fn solution(input: &str) -> u64 {
     let (instructions, network) = input.split_once("\n\n").unwrap();
     let map = parse(network);
@@ -12,7 +14,7 @@ pub fn solution(input: &str) -> u64 {
         .collect::<Vec<[u8; 3]>>();
     // print_current_keys(&current_keys);
     // print!("Cycles: ");
-    let distance = current_keys
+    let distances = current_keys
         .iter()
         .map(|key| {
             let mut distance = 0;
@@ -31,8 +33,8 @@ pub fn solution(input: &str) -> u64 {
             distance
         })
         // .inspect(|d| print!("{} ", d))
-        .reduce(lcm)
-        .unwrap();
+        .collect::<Vec<u64>>();
+    let distance = lcm_all(&distances);
     // println!();
     distance
 }
@@ -59,25 +61,3 @@ fn parse(network: &str) -> HashMap<[u8; 3], ([u8; 3], [u8; 3])> {
 //             .collect::<Vec<&str>>()
 //     );
 // }
-
-fn lcm(first: u64, second: u64) -> u64 {
-    first * second / gcd(first, second)
-}
-
-fn gcd(first: u64, second: u64) -> u64 {
-    let mut max = first;
-    let mut min = second;
-    if min > max {
-        std::mem::swap(&mut max, &mut min)
-    }
-
-    loop {
-        let res = max % min;
-        if res == 0 {
-            return min;
-        }
-
-        max = min;
-        min = res;
-    }
-}

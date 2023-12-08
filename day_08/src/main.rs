@@ -35,5 +35,5 @@ mod tests {
     fn bench_part_2_a1(b: &mut Bencher) {
         let input = include_str!("input.txt");
         b.iter(|| crate::part_2_a1::solution(input));
-    } // 2,509,102 ns/iter (+/- 22,222)
+    } // 2,492,490 ns/iter (+/- 47,999)
 }
