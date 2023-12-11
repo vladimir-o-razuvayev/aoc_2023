@@ -47,7 +47,7 @@ pub fn solution(input: &str) -> usize {
         galaxies = expanded_galaxies;
     }
 
-    let mut distances = HashMap::new();
+    let mut distances = HashMap::with_capacity(galaxies.len().pow(2));
 
     for (i, &gi) in galaxies.iter().enumerate() {
         for (j, &gj) in galaxies.iter().enumerate().filter(|(j, _)| i != *j) {
